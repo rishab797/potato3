@@ -18,6 +18,8 @@ RUN apt-get update && apt-get install -y \
 COPY . .
 
 # Install Python dependencies
+RUN pip install --no-cache-dir tensorflow==2.15.0 keras==3.0.5
+
 RUN pip install --no-cache-dir --upgrade pip
 RUN pip install --no-cache-dir \
     tensorflow==2.15.0 \
