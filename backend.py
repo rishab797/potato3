@@ -6,9 +6,11 @@ import tensorflow as tf
 import io
 
 app = FastAPI()
-from keras_core import models  # NOT keras
+from keras.models import load_model  # ✅ correct
 
-model = models.load_model("2.keras")
+model = load_model("2.keras", compile=False)
+
+
 
 CLASS_NAMES = ['Fungi', 'Healthy', 'Nematode', 'Pest', 'Phytopthora', 'Virus']
 
