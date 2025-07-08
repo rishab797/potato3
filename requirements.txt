@@ -1,7 +1,6 @@
-tensorflow-cpu==2.12.0
-keras==2.12.0
-numpy
-Pillow
-opencv-python
-uvicorn
+tensorflow==2.15.0
+keras==3.0.5
 fastapi
+uvicorn
+pillow
+numpy
