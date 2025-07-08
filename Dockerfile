@@ -1,31 +1,16 @@
-FROM python:3.10-slim
-
-# Avoid writing .pyc files
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+FROM tensorflow/tensorflow:2.15.0
 
 # Set working directory
 WORKDIR /app
 
-# Install dependencies
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    libglib2.0-0 \
-    libsm6 \
-    libxrender1 \
-    libxext6 \
-    libgl1-mesa-glx \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install Python packages (TensorFlow 2.15 & Keras 3)
-RUN pip install --upgrade pip
-RUN pip install tensorflow==2.15.0 keras==3.0.5 fastapi uvicorn numpy pillow
-
-# Copy app code
+# Copy your code
 COPY . .
 
-# Expose port
+# Install required packages (Keras already included)
+RUN pip install --no-cache-dir fastapi uvicorn pillow numpy
+
+# Expose port for Render (optional but common)
 EXPOSE 7860
 
-# Start app
-CMD ["uvicorn", "backend:app", "--host", "0.0.0.0", "--port", "7860"]
+# Run your app
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "7860"]
