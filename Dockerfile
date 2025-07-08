@@ -1,13 +1,26 @@
-FROM python:3.10
+FROM python:3.10-slim
 
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# Install system packages
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libglib2.0-0 \
+    libsm6 \
+    libxrender1 \
+    libxext6 \
+    libgl1-mesa-glx \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python packages
+COPY requirements.txt .
+RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
+
+# Add app files
+COPY . /app
 WORKDIR /app
 
-COPY . .
-
-# Install dependencies
-RUN pip install --upgrade pip
-RUN pip install keras-core tensorflow fastapi uvicorn pillow numpy
-
-EXPOSE 7860
-
+# Start FastAPI
 CMD ["uvicorn", "backend:app", "--host", "0.0.0.0", "--port", "7860"]
