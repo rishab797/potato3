@@ -4,11 +4,17 @@ from PIL import Image
 import numpy as np
 import tensorflow as tf
 import io
+import os
+os.environ['TF_USE_LEGACY_KERAS'] = '1'
+
 
 app = FastAPI()
+from keras.models import load_model  # ✅ correct
 
-# Load the model
-model = tf.keras.models.load_model("2.keras")
+model = load_model("2.keras", compile=False)
+
+
+
 CLASS_NAMES = ['Fungi', 'Healthy', 'Nematode', 'Pest', 'Phytopthora', 'Virus']
 
 @app.post("/predict")
